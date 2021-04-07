@@ -52,11 +52,11 @@ const { ORACLE, MYSQL, POSTGRESQL, MARIADB, MSSQL, SQL, MONGODB, COUCHBASE, NEO4
 const NO_DATABASE = databaseTypes.NO;
 
 const { JWT, OAUTH2, SESSION } = require('../jdl/jhipster/authentication-types');
-const { EHCACHE, REDIS } = require('../jdl/jhipster/cache-types');
+const { EHCACHE, REDIS, HAZELCAST, MEMCACHED } = require('../jdl/jhipster/cache-types');
 const { GRADLE, MAVEN } = require('../jdl/jhipster/build-tool-types');
 const { SPRING_WEBSOCKET } = require('../jdl/jhipster/websocket-types');
 const { KAFKA } = require('../jdl/jhipster/message-broker-types');
-const { CONSUL } = require('../jdl/jhipster/service-discovery-types');
+const { CONSUL, EUREKA } = require('../jdl/jhipster/service-discovery-types');
 const { GATLING, CUCUMBER, PROTRACTOR, CYPRESS } = require('../jdl/jhipster/test-framework-types');
 const { GATEWAY, MICROSERVICE, MONOLITH } = require('../jdl/jhipster/application-types');
 const { ELASTICSEARCH } = require('../jdl/jhipster/search-engine-types');
@@ -925,6 +925,15 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
    */
   copyExternalAssetsInWebpack(sourceFolder, targetFolder) {
     this.needleApi.clientWebpack.copyExternalAssets(sourceFolder, targetFolder);
+  }
+
+  /**
+   * Add webpack config.
+   *
+   * @param {string} config - webpack config to be merged
+   */
+  addWebpackConfig(config) {
+    this.needleApi.clientWebpack.addWebpackConfig(config);
   }
 
   /**
@@ -2372,6 +2381,9 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     if (options.testFrameworks) {
       this.jhipsterConfig.testFrameworks = options.testFrameworks;
     }
+    if (options.cypressCoverage !== undefined) {
+      this.jhipsterConfig.cypressCoverage = options.cypressCoverage;
+    }
     if (options.legacyDbNames !== undefined) {
       this.jhipsterConfig.legacyDbNames = options.legacyDbNames;
     }
@@ -2464,6 +2476,7 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.withAdminUi = config.withAdminUi;
 
     dest.testFrameworks = config.testFrameworks || [];
+    dest.cypressCoverage = config.cypressCoverage;
 
     dest.gatlingTests = dest.testFrameworks.includes(GATLING);
     dest.cucumberTests = dest.testFrameworks.includes(CUCUMBER);
@@ -2474,6 +2487,7 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.jhiPrefixDashed = _.kebabCase(this.jhiPrefix);
     dest.applicationTypeGateway = config.applicationType === GATEWAY;
     dest.applicationTypeMonolith = config.applicationType === MONOLITH;
+    dest.applicationTypeMicroservice = config.applicationType === MICROSERVICE;
   }
 
   /**
@@ -2545,6 +2559,8 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.buildToolUndefined = config.buildTool === undefined;
 
     dest.cacheProviderRedis = config.cacheProvider === REDIS;
+    dest.cacheProviderHazelcast = config.cacheProvider === HAZELCAST;
+    dest.cacheProviderMemcached = config.cacheProvider === MEMCACHED;
 
     dest.databaseTypeNo = config.databaseType === NO_DATABASE;
     dest.databaseTypeSql = config.databaseType === SQL;
@@ -2555,6 +2571,7 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
 
     dest.devDatabaseTypeH2Disk = config.devDatabaseType === H2_DISK;
     dest.devDatabaseTypeH2Memory = config.devDatabaseType === H2_MEMORY;
+    dest.devDatabaseTypeH2Any = dest.devDatabaseTypeH2Disk || dest.devDatabaseTypeH2Memory;
     dest.devDatabaseTypeCouchbase = config.devDatabaseType === COUCHBASE;
 
     dest.authenticationTypeSession = config.authenticationType === SESSION;
@@ -2562,7 +2579,10 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.authenticationTypeOauth2 = config.authenticationType === OAUTH2;
     dest.communicationSpringWebsocket = config.websocket === SPRING_WEBSOCKET;
     dest.messageBrokerKafka = config.messageBroker === KAFKA;
+
     dest.serviceDiscoveryConsul = config.serviceDiscoveryType === CONSUL;
+    dest.serviceDiscoveryEureka = config.serviceDiscoveryType === EUREKA;
+
     dest.searchEngineElasticsearch = config.searchEngine === ELASTICSEARCH;
   }
 

@@ -85,6 +85,7 @@ function prepareEntityForTemplates(entityWithConfig, generator) {
   entityWithConfig.faker = entityWithConfig.faker || createFaker(generator.jhipsterConfig.nativeLanguage);
   entityWithConfig.resetFakerSeed = (suffix = '') =>
     entityWithConfig.faker.seed(stringHashCode(entityWithConfig.name.toLowerCase() + suffix));
+  entityWithConfig.resetFakerSeed();
 
   entityWithConfig.entityAngularJSSuffix = entityWithConfig.angularJSSuffix;
   if (entityWithConfig.entityAngularJSSuffix && !entityWithConfig.entityAngularJSSuffix.startsWith('-')) {
@@ -247,10 +248,7 @@ function prepareEntityPrimaryKeyForTemplates(entityWithConfig, generator, enable
               return [relationship.relationshipName, field.fieldName];
             },
             get path() {
-              if (field.path) {
-                return [relationship.relationshipName, ...field.path];
-              }
-              return [relationship.relationshipName, field.fieldName];
+              return [relationship.relationshipName, ...field.path];
             },
             get fieldName() {
               return idCount === 1 ? field.fieldName : `${relationship.relationshipName}${field.fieldNameCapitalized}`;
@@ -265,6 +263,9 @@ function prepareEntityPrimaryKeyForTemplates(entityWithConfig, generator, enable
             },
             get reference() {
               return fieldToReference(entityWithConfig, this);
+            },
+            get relationshipsPath() {
+              return [relationship, ...field.relationshipsPath];
             },
           }));
         },
@@ -372,7 +373,7 @@ function fieldToId(field) {
       return field.derivedPath ? field.derivedPath.join('.') : field.fieldName;
     },
     get nameDottedAsserted() {
-      return field.derivedPath ? `${field.derivedPath.join('!.')}!` : field.fieldName;
+      return field.derivedPath ? `${field.derivedPath.join('!.')}!` : `${field.fieldName}!`;
     },
     get setter() {
       return `set${this.nameCapitalized}`;
@@ -382,6 +383,9 @@ function fieldToId(field) {
     },
     get autoGenerate() {
       return !!field.autoGenerate;
+    },
+    get relationshipsPath() {
+      return field.relationshipsPath;
     },
   };
 }
