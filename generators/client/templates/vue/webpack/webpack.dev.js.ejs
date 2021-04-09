@@ -18,6 +18,7 @@
 -%>
 'use strict';
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const path = require('path');
 const portfinder = require('portfinder');
 const webpack = require('webpack');
 const { merge: webpackMerge } = require('webpack-merge');
@@ -46,6 +47,21 @@ module.exports = webpackMerge(baseWebpackConfig, {
   },
   optimization: {
     moduleIds: 'named',
+  },
+  cache: {
+    // 1. Set cache type to filesystem
+    type: 'filesystem',
+    cacheDirectory: path.resolve(__dirname, '<%= buildDir %>webpack'),
+    buildDependencies: {
+      // 2. Add your config as buildDependency to get cache invalidation on config change
+      config: [
+        __filename,
+        path.resolve(__dirname, 'webpack.common.js'),
+        path.resolve(__dirname, 'utils.js'),
+        path.resolve(__dirname, '../postcssrc.js'),
+        path.resolve(__dirname, '../tsconfig.json')
+      ],
+    },
   },
   devServer: {
     contentBase: './<%= DIST_DIR %>',
