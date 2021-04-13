@@ -61,7 +61,7 @@
     "test": "mocha --no-insight --forbid-only --parallel"
   },
   "dependencies": {
-    "aws-sdk": "2.879.0",
+    "aws-sdk": "2.884.0",
     "axios": "0.21.1",
     "chalk": "4.1.0",
     "chevrotain": "9.0.1",
@@ -69,7 +69,7 @@
     "conf": "9.0.1",
     "didyoumean": "1.2.1",
     "ejs": "3.1.6",
-    "faker": "5.5.2",
+    "faker": "5.5.3",
     "find-up": "5.0.0",
     "glob": "7.1.6",
     "gulp-filter": "6.0.0",
@@ -98,8 +98,8 @@
   },
   "devDependencies": {
     "chai": "4.3.4",
-    "ejs-lint": "1.1.0",
-    "eslint": "7.23.0",
+    "ejs-lint": "1.2.0",
+    "eslint": "7.24.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-chai-friendly": "^0.6.0",
