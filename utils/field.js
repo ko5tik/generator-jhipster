@@ -21,7 +21,7 @@ const assert = require('assert');
 const _ = require('lodash');
 const { isReservedTableName } = require('../jdl/jhipster/reserved-keywords');
 const { BlobTypes, CommonDBTypes, RelationalOnlyDBTypes } = require('../jdl/jhipster/field-types');
-const { MIN, MINLENGTH, MAX, MAXLENGTH, PATTERN, REQUIRED, UNIQUE } = require('../jdl/jhipster/validations');
+const { MIN, MINLENGTH, MINBYTES, MAX, MAXBYTES, MAXLENGTH, PATTERN, REQUIRED, UNIQUE } = require('../jdl/jhipster/validations');
 const { MYSQL, SQL } = require('../jdl/jhipster/database-types');
 const { MapperTypes } = require('../jdl/jhipster/entity-options');
 
@@ -183,7 +183,7 @@ const generateFakeDataForField = (field, faker, changelogDate, type = 'csv') => 
   return data;
 };
 
-function derivedProperties(field) {
+function _derivedProperties(field) {
   const fieldType = field.fieldType;
   const fieldTypeBlobContent = field.fieldTypeBlobContent;
   const validationRules = field.fieldValidate ? field.fieldValidateRules : [];
@@ -222,6 +222,8 @@ function derivedProperties(field) {
     fieldValidationMaxLength: validationRules.includes(MAXLENGTH),
     fieldValidationPattern: validationRules.includes(PATTERN),
     fieldValidationUnique: validationRules.includes(UNIQUE),
+    fieldValidationMinBytes: validationRules.includes(MINBYTES),
+    fieldValidationMaxBytes: validationRules.includes(MAXBYTES),
   });
 }
 
@@ -383,7 +385,7 @@ function prepareFieldForTemplates(entityWithConfig, field, generator) {
   field.path = [field.fieldName];
   field.relationshipsPath = [];
   field.reference = fieldToReference(entityWithConfig, field);
-  derivedProperties(field);
+  _derivedProperties(field);
   return field;
 }
 

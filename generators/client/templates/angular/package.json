@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@angular/common": "11.2.10",
+    "@angular/common": "11.2.11",
     "bootstrap": "4.6.0",
     "@fortawesome/angular-fontawesome": "0.8.2",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
@@ -17,18 +17,18 @@
     "zone.js": "0.11.3"
   },
   "devDependencies": {
-    "@angular/cli": "11.2.9",
+    "@angular/cli": "11.2.10",
     "@angular-builders/custom-webpack": "11.1.1",
-    "@angular-eslint/eslint-plugin": "2.1.0",
+    "@angular-eslint/eslint-plugin": "4.0.0",
     "@types/node": "14.14.41",
     "@types/jest": "26.0.22",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "browser-sync": "2.26.14",
     "browser-sync-webpack-plugin": "2.3.0",
     "copy-webpack-plugin": "6.4.1",
-    "eslint": "7.24.0",
-    "eslint-config-prettier": "8.2.0",
-    "eslint-webpack-plugin": "2.5.3",
+    "eslint": "7.25.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-webpack-plugin": "2.5.4",
     "friendly-errors-webpack-plugin": "1.7.0",
     "jest": "26.6.3",
     "jest-date-mock": "1.0.8",
