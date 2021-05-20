@@ -24,9 +24,6 @@ const defaultCommands = {
   aws: {
     desc: 'Deploy the current application to Amazon Web Services',
   },
-  'aws-containers': {
-    desc: 'Deploy the current application to Amazon Web Services using ECS',
-  },
   'azure-app-service': {
     desc: 'Deploy the current application to Azure App Service',
   },
@@ -72,13 +69,11 @@ const defaultCommands = {
     options: [
       {
         option: '--fork',
-        desc:
-          'Generate multiple applications in parallel without any interaction. This is default when every application in the JDL is new. Files will be overwritten without prompt. The "--incremental-changelog" option might not work correctly when this option is used for existing applications',
+        desc: 'Generate multiple applications in parallel without any interaction. This is default when every application in the JDL is new. Files will be overwritten without prompt. The "--incremental-changelog" option might not work correctly when this option is used for existing applications',
       },
       {
         option: '--interactive',
-        desc:
-          'Generate multiple applications in series so that questions can be interacted with. This is the default when there is an existing application configuration in any of the folders',
+        desc: 'Generate multiple applications in series so that questions can be interacted with. This is the default when there is an existing application configuration in any of the folders',
       },
       {
         option: '--json-only',
