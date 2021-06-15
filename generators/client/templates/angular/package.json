@@ -13,7 +13,7 @@
     "ngx-webstorage": "8.0.0",
     "rxjs": "6.6.7",
     "swagger-ui-dist": "3.50.0",
-    "tslib": "2.2.0",
+    "tslib": "2.3.0",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
@@ -23,7 +23,7 @@
     "@angular-eslint/eslint-plugin": "12.1.0",
     "@types/node": "15.12.2",
     "@types/jest": "26.0.23",
-    "@typescript-eslint/eslint-plugin": "4.26.1",
+    "@typescript-eslint/eslint-plugin": "4.27.0",
     "browser-sync": "2.26.14",
     "browser-sync-webpack-plugin": "2.3.0",
     "copy-webpack-plugin": "9.0.0",

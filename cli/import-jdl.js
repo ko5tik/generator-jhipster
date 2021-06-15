@@ -413,6 +413,32 @@ class JDLProcessor {
     if (applicationsWithEntities.length === 0) {
       return Promise.resolve();
     }
+
+    const allApplications = Object.fromEntries(
+      applicationsWithEntities.map((applicationWithEntities, applicationIndex) => {
+        applicationWithEntities.config.applicationIndex = applicationIndex;
+        return [applicationWithEntities.config.baseName, applicationWithEntities.config];
+      })
+    );
+
+    applicationsWithEntities.forEach((applicationWithEntities, idx) => {
+      const relatedApplications = Object.entries(allApplications).filter(
+        ([baseName]) =>
+          applicationWithEntities.config.baseName !== baseName &&
+          applicationWithEntities.entities.find(entity => entity.microserviceName === baseName)
+      );
+      const { serverPort: gatewayServerPort } = applicationWithEntities.config;
+      if (relatedApplications.length > 0) {
+        applicationWithEntities.config.applications = Object.fromEntries(
+          relatedApplications.map(([baseName, config]) => {
+            config.gatewayServerPort = gatewayServerPort;
+            const { serverPort, applicationIndex } = config;
+            return [baseName, { serverPort, applicationIndex }];
+          })
+        );
+      }
+    });
+
     if (this.interactive) {
       return applicationsWithEntities.reduce((promise, applicationWithEntities) => {
         return promise.then(() => callGenerator(applicationWithEntities));
