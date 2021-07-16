@@ -29,6 +29,7 @@ const statistics = require('../statistics');
 const { getBase64Secret, getRandomHex } = require('../utils');
 const { defaultConfig } = require('../generator-defaults');
 const { GRADLE } = require('../../jdl/jhipster/build-tool-types');
+const { ELASTICSEARCH } = require('../../jdl/jhipster/search-engine-types');
 
 let useBlueprints;
 
@@ -149,6 +150,8 @@ module.exports = class JHipsterServerGenerator extends BaseBlueprintGenerator {
         this.JACKSON_DATABIND_NULLABLE_VERSION = constants.JACKSON_DATABIND_NULLABLE_VERSION;
 
         this.ANGULAR = constants.SUPPORTED_CLIENT_FRAMEWORKS.ANGULAR;
+        this.VUE = constants.SUPPORTED_CLIENT_FRAMEWORKS.VUE;
+        this.REACT = constants.SUPPORTED_CLIENT_FRAMEWORKS.REACT;
 
         this.packagejs = packagejs;
       },
@@ -251,8 +254,12 @@ module.exports = class JHipsterServerGenerator extends BaseBlueprintGenerator {
     return {
       loadSharedConfig() {
         this.loadAppConfig();
+        this.loadDerivedAppConfig();
         this.loadClientConfig();
+        this.loadDerivedClientConfig();
         this.loadServerConfig();
+        this.loadDerivedServerConfig();
+        this.loadPlatformConfig();
         this.loadTranslationConfig();
       },
     };
@@ -409,6 +416,11 @@ module.exports = class JHipsterServerGenerator extends BaseBlueprintGenerator {
             scriptsStorage.set('docker:db:up', `echo "Docker for db ${databaseType} not configured for application ${this.baseName}"`);
           }
         }
+        if (this.jhipsterConfig.searchEngine === ELASTICSEARCH) {
+          dockerAwaitScripts.push(
+            'echo "Waiting for Elasticsearch to start" && wait-on "http-get://localhost:9200/_cluster/health?wait_for_status=green&timeout=60s" && echo "Elasticsearch started"'
+          );
+        }
 
         const dockerOthersUp = [];
         const dockerOthersDown = [];
@@ -422,6 +434,10 @@ module.exports = class JHipsterServerGenerator extends BaseBlueprintGenerator {
             } else if (dockerConfig === 'jhipster-registry') {
               dockerAwaitScripts.push(
                 'echo "Waiting for jhipster-registry to start" && wait-on http-get://localhost:8761/management/health && echo "jhipster-registry started"'
+              );
+            } else if (dockerConfig === 'keycloak') {
+              dockerAwaitScripts.push(
+                'echo "Waiting for keycloak to start" && wait-on http-get://localhost:9080/auth/realms/jhipster -t 30000 && echo "keycloak started" || echo "keycloak not running, make sure oauth2 server is running"'
               );
             }
 
@@ -461,6 +477,7 @@ module.exports = class JHipsterServerGenerator extends BaseBlueprintGenerator {
             'java:docker': './mvnw -ntp verify -DskipTests jib:dockerBuild',
             'backend:unit:test': `./mvnw -ntp -P-webapp verify --batch-mode ${javaCommonLog} ${javaTestLog}`,
             'backend:build-cache': './mvnw dependency:go-offline',
+            'backend:debug': './mvnw -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"',
           });
         } else if (buildTool === 'gradle') {
           const excludeWebapp = this.jhipsterConfig.skipClient ? '' : '-x webapp';
