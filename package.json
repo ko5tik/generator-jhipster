@@ -79,7 +79,7 @@
     "update-snapshot": "mocha --no-insight --no-parallel --updateSnapshot --"
   },
   "dependencies": {
-    "aws-sdk": "2.973.0",
+    "aws-sdk": "2.976.0",
     "axios": "0.21.1",
     "chalk": "4.1.2",
     "chevrotain": "9.0.2",
@@ -95,7 +95,7 @@
     "insight": "0.11.1",
     "js-yaml": "4.1.0",
     "lodash": "4.17.21",
-    "mem-fs-editor": "9.1.0",
+    "mem-fs-editor": "9.3.0",
     "minimatch": "3.0.4",
     "normalize-path": "3.0.0",
     "ora": "5.4.1",
@@ -124,7 +124,7 @@
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-chai-friendly": "^0.7.1",
-    "eslint-plugin-import": "2.24.1",
+    "eslint-plugin-import": "2.24.2",
     "eslint-plugin-mocha": "9.0.0",
     "eslint-plugin-prettier": "3.4.1",
     "expect": "27.0.6",
