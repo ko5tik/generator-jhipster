@@ -163,7 +163,17 @@ const expectedFiles = {
 
   maven: ['pom.xml', 'mvnw', 'mvnw.cmd', '.mvn/wrapper/maven-wrapper.jar', '.mvn/wrapper/maven-wrapper.properties', 'checkstyle.xml'],
 
-  common: ['.prettierignore', '.prettierrc', 'README.md', '.gitignore', '.gitattributes', '.editorconfig', '.huskyrc', '.lintstagedrc.js'],
+  common: [
+    '.prettierignore',
+    '.prettierrc',
+    'README.md',
+    '.gitignore',
+    '.gitattributes',
+    '.editorconfig',
+    '.lintstagedrc.js',
+    '.husky/pre-commit',
+    'package.json',
+  ],
 
   server: [
     `${SERVER_MAIN_RES_DIR}banner.txt`,
@@ -366,11 +376,16 @@ const expectedFiles = {
     `${CLIENT_MAIN_SRC_DIR}app/entities/user/user.model.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/entities/user/user.service.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/activate/activate.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/account/activate/activate.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/password-reset/finish/password-reset-finish.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/account/password-reset/finish/password-reset-finish.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/password-reset/init/password-reset-init.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/account/password-reset/init/password-reset-init.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/password/password-strength-bar/password-strength-bar.component.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/password/password.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/account/password/password.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/register/register.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/account/register/register.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/account/settings/settings.component.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/user-management/delete/user-management-delete-dialog.component.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/user-management/detail/user-management-detail.component.spec.ts`,
@@ -384,7 +399,6 @@ const expectedFiles = {
     'angular.json',
     'ngsw-config.json',
     '.eslintrc.json',
-    'package.json',
     '.browserslistrc',
     `${CLIENT_MAIN_SRC_DIR}main.ts`,
     `${CLIENT_MAIN_SRC_DIR}bootstrap.ts`,
@@ -586,6 +600,7 @@ const expectedFiles = {
     `${CLIENT_MAIN_SRC_DIR}app/admin/configuration/configuration.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/health/modal/health-modal.component.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/health/health.component.spec.ts`,
+    `${CLIENT_MAIN_SRC_DIR}app/admin/health/health.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/logs/logs.component.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/logs/logs.service.spec.ts`,
     `${CLIENT_MAIN_SRC_DIR}app/admin/metrics/metrics.component.spec.ts`,
@@ -760,7 +775,6 @@ const expectedFiles = {
   ],
 
   couchbase: [
-    `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/repository/CustomCouchbaseRepository.java`,
     `${SERVER_MAIN_RES_DIR}config/couchmove/changelog/V0__create_indexes.n1ql`,
     `${SERVER_MAIN_RES_DIR}config/couchmove/changelog/V0.1__initial_setup/ROLE_ADMIN.json`,
     `${SERVER_MAIN_RES_DIR}config/couchmove/changelog/V0.1__initial_setup/ROLE_USER.json`,
@@ -779,10 +793,7 @@ const expectedFiles = {
     `${DOCKER_DIR}neo4j.yml`,
   ],
 
-  couchbaseSearch: [
-    `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/repository/search/SearchCouchbaseRepository.java`,
-    `${SERVER_TEST_SRC_DIR}com/mycompany/myapp/repository/CustomCouchbaseRepositoryTest.java`,
-  ],
+  couchbaseSearch: [`${SERVER_TEST_SRC_DIR}com/mycompany/myapp/repository/JHipsterCouchbaseRepositoryTest.java`],
 
   cassandra: [
     `${SERVER_MAIN_RES_DIR}config/cql/create-keyspace-prod.cql`,

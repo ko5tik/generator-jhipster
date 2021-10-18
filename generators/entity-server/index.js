@@ -157,6 +157,7 @@ module.exports = class extends BaseBlueprintGenerator {
       },
 
       processUniqueEntityTypes() {
+        this.reactiveOtherEntities = new Set(this.reactiveEagerRelations.map(rel => rel.otherEntity));
         this.reactiveUniqueEntityTypes = new Set(this.reactiveEagerRelations.map(rel => rel.otherEntityNameCapitalized));
         this.reactiveUniqueEntityTypes.add(this.entityClass);
       },
@@ -170,7 +171,10 @@ module.exports = class extends BaseBlueprintGenerator {
 
   // Public API method used by the getter and also by Blueprints
   _writing() {
-    return { ...writeFiles(), ...super._missingPostWriting() };
+    return {
+      ...writeFiles(),
+      ...super._missingPostWriting(),
+    };
   }
 
   get writing() {

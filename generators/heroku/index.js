@@ -191,29 +191,8 @@ module.exports = class extends BaseBlueprintGenerator {
             type: 'list',
             name: 'herokuJavaVersion',
             message: 'Which Java version would you like to use to build and run your app ?',
-            choices: [
-              {
-                value: '1.8',
-                name: '1.8',
-              },
-              {
-                value: '11',
-                name: '11',
-              },
-              {
-                value: '12',
-                name: '12',
-              },
-              {
-                value: '13',
-                name: '13',
-              },
-              {
-                value: '14',
-                name: '14',
-              },
-            ],
-            default: 1,
+            choices: constants.JAVA_COMPATIBLE_VERSIONS.map(version => ({ value: version })),
+            default: constants.JAVA_VERSION,
           },
         ];
 
@@ -244,6 +223,7 @@ module.exports = class extends BaseBlueprintGenerator {
             default: 1,
           },
           {
+            when: answers => answers.useOkta,
             type: 'input',
             name: 'oktaAdminLogin',
             message: 'Login (valid email) for the JHipster Admin user:',
@@ -254,20 +234,14 @@ module.exports = class extends BaseBlueprintGenerator {
               return true;
             },
           },
-          {
-            type: 'confirm',
-            name: 'oktaAdminPassword',
-            message: `${chalk.blue('Take note of this password!')} You will need it on your first login: ${chalk.blue(
-              this.randomPassword
-            )}`,
-            default: true,
-          },
         ];
 
         return this.prompt(prompts).then(props => {
           this.useOkta = props.useOkta;
-          this.oktaAdminLogin = props.oktaAdminLogin;
-          this.oktaAdminPassword = this.randomPassword;
+          if (this.useOkta) {
+            this.oktaAdminLogin = props.oktaAdminLogin;
+            this.oktaAdminPassword = this.randomPassword;
+          }
         });
       },
     };
@@ -300,7 +274,6 @@ module.exports = class extends BaseBlueprintGenerator {
           herokuJavaVersion: this.herokuJavaVersion,
           useOkta: this.useOkta,
           oktaAdminLogin: this.oktaAdminLogin,
-          oktaAdminPassword: this.oktaAdminPassword,
         });
       },
     };
@@ -391,7 +364,7 @@ module.exports = class extends BaseBlueprintGenerator {
         const regionParams = this.herokuRegion !== 'us' ? ` --region ${this.herokuRegion}` : '';
 
         this.log(chalk.bold('\nCreating Heroku application and setting up node environment'));
-        const child = ChildProcess.exec(`heroku create ${this.herokuAppName}${regionParams}`, (err, stdout, stderr) => {
+        const child = ChildProcess.exec(`heroku create ${this.herokuAppName}${regionParams}`, { timeout: 6000 }, (err, stdout, stderr) => {
           if (err) {
             if (stderr.includes('is already taken')) {
               const prompts = [
@@ -458,7 +431,11 @@ module.exports = class extends BaseBlueprintGenerator {
               });
             } else {
               this.abort = true;
-              this.log.error(err);
+              if (stderr.includes('Invalid credentials')) {
+                this.log.error("Error: Not authenticated. Run 'heroku login' to login to your heroku account and try again.");
+              } else {
+                this.log.error(err);
+              }
               done();
             }
           } else {
@@ -779,7 +756,7 @@ module.exports = class extends BaseBlueprintGenerator {
                 this.log(chalk.yellow('After you have installed jq execute ./provision-okta-addon.sh manually.'));
               }
               if (curlAvailable && jqAvailable) {
-                this.log(chalk.green('Running ./provision-okta-addon.sh to create all required roles and users to use with jhipster.'));
+                this.log(chalk.green('Running ./provision-okta-addon.sh to create all required roles and users for JHipster.'));
                 try {
                   await execCmd('./provision-okta-addon.sh');
                   this.log(chalk.bold('\nOkta configured successfully!'));
@@ -850,7 +827,7 @@ module.exports = class extends BaseBlueprintGenerator {
                 this.log(chalk.yellow('After you have installed jq execute ./provision-okta-addon.sh manually.'));
               }
               if (curlAvailable && jqAvailable) {
-                this.log(chalk.green('Running ./provision-okta-addon.sh to create all required roles and users to use with JHipster.'));
+                this.log(chalk.green('Running ./provision-okta-addon.sh to create all required roles and users for JHipster.'));
                 try {
                   await execCmd('./provision-okta-addon.sh');
                   this.log(chalk.bold('\nOkta configured successfully!'));

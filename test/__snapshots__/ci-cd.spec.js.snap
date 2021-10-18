@@ -35,7 +35,7 @@ Object {
     pool:
       vmImage: \\"ubuntu-20.04\\"
     variables:
-      NODE_VERSION: 14.17.1
+      NODE_VERSION: 14.17.6
       SPRING_OUTPUT_ANSI_ENABLED: NEVER
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
@@ -164,7 +164,7 @@ Object {
     pool:
       vmImage: \\"ubuntu-20.04\\"
     variables:
-      NODE_VERSION: 14.17.1
+      NODE_VERSION: 14.17.6
       SPRING_OUTPUT_ANSI_ENABLED: NEVER
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
@@ -305,7 +305,7 @@ Object {
     pool:
       vmImage: \\"ubuntu-20.04\\"
     variables:
-      NODE_VERSION: 14.17.1
+      NODE_VERSION: 14.17.6
       SPRING_OUTPUT_ANSI_ENABLED: NEVER
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
@@ -434,7 +434,7 @@ Object {
     pool:
       vmImage: \\"ubuntu-20.04\\"
     variables:
-      NODE_VERSION: 14.17.1
+      NODE_VERSION: 14.17.6
       SPRING_OUTPUT_ANSI_ENABLED: NEVER
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
@@ -575,7 +575,7 @@ Object {
     pool:
       vmImage: \\"ubuntu-20.04\\"
     variables:
-      NODE_VERSION: 14.17.1
+      NODE_VERSION: 14.17.6
       SPRING_OUTPUT_ANSI_ENABLED: NEVER
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
@@ -1117,7 +1117,7 @@ jobs:
         if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
         timeout-minutes: 40
         env:
-            NODE_VERSION: 14.17.1
+            NODE_VERSION: 14.17.6
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
             JHI_DISABLE_WEBPACK_LOGS: true
@@ -1126,11 +1126,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14.17.1
+                  node-version: 14.17.6
             - uses: actions/setup-java@v2
               with:
-                  distribution: 'adopt'
-                  java-version: '11.x'
+                  distribution: 'temurin'
+                  java-version: 11
             - name: Install node.js packages
               run: npm install
             - name: Run backend test
@@ -1204,7 +1204,7 @@ jobs:
         if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
         timeout-minutes: 40
         env:
-            NODE_VERSION: 14.17.1
+            NODE_VERSION: 14.17.6
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
             JHI_DISABLE_WEBPACK_LOGS: true
@@ -1213,11 +1213,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14.17.1
+                  node-version: 14.17.6
             - uses: actions/setup-java@v2
               with:
-                  distribution: 'adopt'
-                  java-version: '11.x'
+                  distribution: 'temurin'
+                  java-version: 11
             - name: Install node.js packages
               run: npm install
             - name: Install Snyk CLI
@@ -1368,7 +1368,7 @@ jobs:
         if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
         timeout-minutes: 40
         env:
-            NODE_VERSION: 14.17.1
+            NODE_VERSION: 14.17.6
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
             JHI_DISABLE_WEBPACK_LOGS: true
@@ -1377,11 +1377,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14.17.1
+                  node-version: 14.17.6
             - uses: actions/setup-java@v2
               with:
-                  distribution: 'adopt'
-                  java-version: '11.x'
+                  distribution: 'temurin'
+                  java-version: 11
             - name: Install node.js packages
               run: npm install
             - name: Run backend test
@@ -1449,7 +1449,7 @@ jobs:
         if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
         timeout-minutes: 40
         env:
-            NODE_VERSION: 14.17.1
+            NODE_VERSION: 14.17.6
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
             JHI_DISABLE_WEBPACK_LOGS: true
@@ -1458,11 +1458,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14.17.1
+                  node-version: 14.17.6
             - uses: actions/setup-java@v2
               with:
-                  distribution: 'adopt'
-                  java-version: '11.x'
+                  distribution: 'temurin'
+                  java-version: 11
             - name: Install node.js packages
               run: npm install
             - name: Install Snyk CLI
@@ -1635,7 +1635,7 @@ jobs:
         if: \\"!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')\\"
         timeout-minutes: 40
         env:
-            NODE_VERSION: 14.17.1
+            NODE_VERSION: 14.17.6
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
             JHI_DISABLE_WEBPACK_LOGS: true
@@ -1644,11 +1644,11 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14.17.1
+                  node-version: 14.17.6
             - uses: actions/setup-java@v2
               with:
-                  distribution: 'adopt'
-                  java-version: '11.x'
+                  distribution: 'temurin'
+                  java-version: 11
             - name: Install node.js packages
               run: npm install
             - name: Run backend test
@@ -3551,7 +3551,7 @@ services:
   - docker
 language: node_js
 node_js:
-  - \\"14.17.1\\"
+  - \\"14.17.6\\"
 cache:
   directories:
     - node
@@ -3559,7 +3559,8 @@ cache:
     - $HOME/.gradle
 env:
   global:
-    - NODE_VERSION=14.17.1
+    - NODE_VERSION=14.17.6
+    - JHI_JDK=11
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
@@ -3567,13 +3568,17 @@ env:
     - CYPRESS_ENABLE_RECORD: false
 before_install:
   - |
-    if [[ $JHI_JDK = '8' ]]; then
-      echo '*** Using OpenJDK 8'
-    else
-      echo '*** Using OpenJDK 11 by default'
+    if [[ $JHI_JDK = '17' ]]; then
+      echo '*** Using OpenJDK 17'
       sudo add-apt-repository ppa:openjdk-r/ppa -y
       sudo apt-get update -q
-      sudo apt-get install -y openjdk-11-jdk -y
+      sudo apt-get install -y openjdk-17-jdk -y
+      sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+      java -version
+    else
+      echo '*** Using OpenJDK 11 by default'
+      sudo apt-get update -q
+      sudo apt-get install -y openjdk-11-jdk
       sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
       java -version
     fi
@@ -3643,7 +3648,7 @@ services:
   - docker
 language: node_js
 node_js:
-  - \\"14.17.1\\"
+  - \\"14.17.6\\"
 cache:
   directories:
     - node
@@ -3651,7 +3656,8 @@ cache:
     - $HOME/.m2
 env:
   global:
-    - NODE_VERSION=14.17.1
+    - NODE_VERSION=14.17.6
+    - JHI_JDK=11
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
@@ -3660,13 +3666,17 @@ env:
     - CYPRESS_ENABLE_RECORD: false
 before_install:
   - |
-    if [[ $JHI_JDK = '8' ]]; then
-      echo '*** Using OpenJDK 8'
-    else
-      echo '*** Using OpenJDK 11 by default'
+    if [[ $JHI_JDK = '17' ]]; then
+      echo '*** Using OpenJDK 17'
       sudo add-apt-repository ppa:openjdk-r/ppa -y
       sudo apt-get update -q
-      sudo apt-get install -y openjdk-11-jdk -y
+      sudo apt-get install -y openjdk-17-jdk -y
+      sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+      java -version
+    else
+      echo '*** Using OpenJDK 11 by default'
+      sudo apt-get update -q
+      sudo apt-get install -y openjdk-11-jdk
       sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
       java -version
     fi
@@ -3736,7 +3746,7 @@ services:
   - docker
 language: node_js
 node_js:
-  - \\"14.17.1\\"
+  - \\"14.17.6\\"
 cache:
   directories:
     - node
@@ -3744,7 +3754,8 @@ cache:
     - $HOME/.m2
 env:
   global:
-    - NODE_VERSION=14.17.1
+    - NODE_VERSION=14.17.6
+    - JHI_JDK=11
     - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
     - SPRING_JPA_SHOW_SQL=false
     - JHI_DISABLE_WEBPACK_LOGS=true
@@ -3753,13 +3764,17 @@ env:
     - CYPRESS_ENABLE_RECORD: true
 before_install:
   - |
-    if [[ $JHI_JDK = '8' ]]; then
-      echo '*** Using OpenJDK 8'
-    else
-      echo '*** Using OpenJDK 11 by default'
+    if [[ $JHI_JDK = '17' ]]; then
+      echo '*** Using OpenJDK 17'
       sudo add-apt-repository ppa:openjdk-r/ppa -y
       sudo apt-get update -q
-      sudo apt-get install -y openjdk-11-jdk -y
+      sudo apt-get install -y openjdk-17-jdk -y
+      sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+      java -version
+    else
+      echo '*** Using OpenJDK 11 by default'
+      sudo apt-get update -q
+      sudo apt-get install -y openjdk-11-jdk
       sudo update-java-alternatives -s java-1.11.0-openjdk-amd64
       java -version
     fi

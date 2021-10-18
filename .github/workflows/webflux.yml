@@ -40,9 +40,25 @@ on:
       - 'generators/*client/templates/react/**'
       - 'generators/*client/templates/vue/**'
 jobs:
+  build-matrix:
+    runs-on: ubuntu-20.04
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      client: ${{ steps.build.outputs.client }}
+      server: ${{ steps.build.outputs.server }}
+      any: ${{ steps.build.outputs.any }}
+    steps:
+      - name: 'SETUP: Checkout generator-jhipster'
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 2
+      - name: 'Build matrix'
+        id: build
+        uses: ./.github/actions/build-matrix
   applications:
-    name: ${{ matrix.app-sample }}
+    name: ${{ matrix.suite }}
     runs-on: ${{ matrix.os }}
+    needs: build-matrix
     defaults:
       run:
         working-directory: ${{ github.workspace }}/app
@@ -56,70 +72,89 @@ jobs:
       !contains(github.event.pull_request.title, '[skip ci]') &&
       !contains(github.event.pull_request.title, '[ci skip]') &&
       github.event.action != 'closed' &&
-      !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci')
+      !contains(github.event.pull_request.labels.*.name, 'pr: skip-ci') &&
+      needs.build-matrix.outputs.any != 'false'
     timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         cache: [angular]
-        app-sample:
+        suite:
           - webflux-mongodb
           - webflux-mongodb-es-session
           - webflux-mongodb-oauth2
           - webflux-gateway-jwt
           - webflux-gateway-oauth2
           - webflux-psql
+          - webflux-psql-additional
           - webflux-mariadb-gradle
+          - webflux-couchbase
         include:
-          - app-sample: webflux-mongodb
+          - suite: webflux-mongodb
+            app-sample: webflux-mongodb
             entity: mongodb
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 1
-          - app-sample: webflux-mongodb-es-session
+          - suite: webflux-mongodb-es-session
+            app-sample: webflux-mongodb-es-session
             entity: mongodb
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 1
-          - app-sample: webflux-mongodb-oauth2
+          - suite: webflux-mongodb-oauth2
+            app-sample: webflux-mongodb-oauth2
             entity: mongodb
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 1
-          - app-sample: webflux-gateway-jwt
+          - suite: webflux-gateway-jwt
+            app-sample: webflux-gateway-jwt
             entity: none
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 0
-          - app-sample: webflux-gateway-oauth2
+          - suite: webflux-gateway-oauth2
+            app-sample: webflux-gateway-oauth2
             entity: none
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 1
-          - app-sample: webflux-psql
+          - suite: webflux-psql
+            app-sample: webflux-psql
             entity: sql
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 0
-          - app-sample: webflux-mariadb-gradle
+          - suite: webflux-psql-additional
+            jdl-sample: webflux-psql,custom-domain
+          - suite: webflux-mariadb-gradle
+            app-sample: webflux-mariadb-gradle
             entity: sqllight
             environment: prod
             war: 0
             e2e: 1
             testcontainers: 0
+          - suite: webflux-couchbase
+            app-sample: webflux-couchbase
+            entity: couchbase
+            environment: prod
+            war: 0
+            e2e: 1
+            testcontainers: 1
     steps:
       #----------------------------------------------------------------------
       # Install all tools and check configuration
       #----------------------------------------------------------------------
       - name: 'SETUP: Checkout generator-jhipster'
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
         with:
           path: generator-jhipster
           fetch-depth: 2
@@ -127,17 +162,18 @@ jobs:
         id: setup
         uses: ./generator-jhipster/.github/actions/setup
         with:
-          entities-sample: ${{ matrix.entity }}
-          application-sample: ${{ matrix.app-sample }}
-          application-environment: ${{ matrix.environment }}
+          entities-sample: ${{ matrix.entity || 'none' }}
+          jdl-sample: ${{ matrix.jdl-sample || '' }}
+          application-sample: ${{ matrix.app-sample || 'jdl' }}
+          application-environment: ${{ matrix.environment || 'prod' }}
           application-packaging: ${{ (matrix.war == 1 && 'war') || 'jar' }}
-          enable-testcontainers: ${{ matrix.testcontainers == 1 }}
-      - uses: actions/setup-node@v2.4.0
+          enable-testcontainers: ${{ matrix.testcontainers != 0 }}
+      - uses: actions/setup-node@v2.4.1
         with:
           node-version: ${{ steps.setup.outputs.node-version }}
       - uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ steps.setup.outputs.java-version }}
       - name: 'SETUP: load npm cache'
         uses: actions/cache@v2.1.6
@@ -182,8 +218,6 @@ jobs:
         run: $JHI_SCRIPTS/11-generate-config.sh
       - name: 'GENERATION: project'
         run: $JHI_SCRIPTS/12-generate-project.sh --skip-jhipster-dependencies ${{ matrix.extra-args }} ${{ matrix.new-extra-args }}
-      - name: 'GENERATION: replace version in generated project'
-        run: $JHI_SCRIPTS/13-replace-version-generated-project.sh
       - name: 'GENERATION: jhipster info'
         run: $JHI_SCRIPTS/14-jhipster-info.sh
       #----------------------------------------------------------------------
@@ -211,10 +245,10 @@ jobs:
         run: npm run ci:e2e:prepare
       - name: 'TESTS: backend'
         id: backend
-        if: steps.compare.outputs.equals != 'true' && matrix.skip-backend-tests != 1
+        if: steps.compare.outputs.equals != 'true' && matrix.skip-backend-tests != 1 && needs.build-matrix.outputs.server != 'false'
         run: npm run ci:backend:test
       - name: 'TESTS: frontend'
-        if: steps.compare.outputs.equals != 'true'
+        if: steps.compare.outputs.equals != 'true' && needs.build-matrix.outputs.client != 'false'
         run: npm run ci:frontend:test
       - name: 'TESTS: packaging'
         if: steps.compare.outputs.equals != 'true'

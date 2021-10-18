@@ -51,8 +51,8 @@ _%>
       - SPRING_NEO4J_URI=bolt://<%= baseName.toLowerCase() %>-neo4j:7687
 <%_ } _%>
 <%_ if (databaseTypeCouchbase) { _%>
-      - SPRING_COUCHBASE_BOOTSTRAP_HOSTS=<%= baseName.toLowerCase() %>-couchbase
-      - SPRING_COUCHBASE_BUCKET_NAME=<%= baseName %>
+      - SPRING_COUCHBASE_CONNECTION_STRING=<%= baseName.toLowerCase() %>-couchbase
+      - JHIPSTER_COUCHBASE_BUCKET_NAME=<%= baseName %>
 <%_ } _%>
 <%_ if (cacheProviderMemcached) { _%>
       - JHIPSTER_CACHE_MEMCACHED_SERVERS=<%= baseName.toLowerCase() %>-memcached:11211
@@ -294,6 +294,7 @@ _%>
     # When run with the "prod" Spring profile, it will read the configuration from a Git repository
     # See https://www.jhipster.tech/jhipster-registry/#spring-cloud-config
     environment:
+      - JHIPSTER_SLEEP=20
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=dev,api-docs<% if (authenticationTypeOauth2) { %>,oauth2<% } %>
       - SPRING_SECURITY_USER_PASSWORD=admin

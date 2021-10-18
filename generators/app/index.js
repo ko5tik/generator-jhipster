@@ -206,12 +206,6 @@ module.exports = class JHipsterAppGenerator extends BaseBlueprintGenerator {
       type: Boolean,
     });
 
-    // This adds support for a `--skip-commit-hook` flag
-    this.option('skip-commit-hook', {
-      desc: 'Skip adding husky commit hooks',
-      type: Boolean,
-    });
-
     this.option('legacy-db-names', {
       desc: 'Generate database names with jhipster 6 compatibility.',
       type: Boolean,
@@ -271,7 +265,7 @@ module.exports = class JHipsterAppGenerator extends BaseBlueprintGenerator {
     }
 
     // Write new definitions to memfs
-    if (this.options.applicationWithEntities) {
+    if (!this.fromBlueprint && this.options.applicationWithEntities) {
       this.config.set({
         ...this.config.getAll(),
         ...this.options.applicationWithEntities.config,

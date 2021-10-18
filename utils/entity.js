@@ -31,7 +31,7 @@ const { OAUTH2 } = require('../jdl/jhipster/authentication-types');
 const { CommonDBTypes } = require('../jdl/jhipster/field-types');
 
 const { BOOLEAN, LONG, STRING, UUID } = CommonDBTypes;
-const { MAPSTRUCT } = MapperTypes;
+const { NO: NO_DTO, MAPSTRUCT } = MapperTypes;
 const { PAGINATION, INFINITE_SCROLL } = PaginationTypes;
 const { SERVICE_IMPL } = ServiceTypes;
 const NO_SERVICE = ServiceTypes.NO;
@@ -40,6 +40,7 @@ const NO_MAPPER = MapperTypes.NO;
 
 const BASE_TEMPLATE_DATA = {
   primaryKey: undefined,
+  entityPackage: undefined,
   skipUiGrouping: false,
   haveFieldWithJavadoc: false,
   existingEnum: false,
@@ -105,7 +106,7 @@ function _derivedProperties(entityWithConfig) {
 }
 
 function prepareEntityForTemplates(entityWithConfig, generator) {
-  const entityName = entityWithConfig.name;
+  const entityName = _.upperFirst(entityWithConfig.name);
   _.defaults(entityWithConfig, entityDefaultConfig, BASE_TEMPLATE_DATA);
 
   entityWithConfig.changelogDateForRecent = parseLiquibaseChangelogDate(entityWithConfig.changelogDate);
@@ -128,15 +129,17 @@ function prepareEntityForTemplates(entityWithConfig, generator) {
     entityWithConfig.skipServer = true;
   }
 
+  entityWithConfig.builtInUser = generator.isBuiltInUser(entityName);
+
   _.defaults(entityWithConfig, {
-    entityNameCapitalized: _.upperFirst(entityName),
+    entityNameCapitalized: entityName,
     entityClass: _.upperFirst(entityName),
     entityInstance: _.lowerFirst(entityName),
     entityTableName: generator.getTableName(entityName),
     entityNamePlural: pluralize(entityName),
   });
 
-  const dto = entityWithConfig.dto === MAPSTRUCT;
+  const dto = entityWithConfig.dto && entityWithConfig.dto !== NO_DTO;
   if (dto) {
     _.defaults(entityWithConfig, {
       dtoClass: generator.asDto(entityWithConfig.entityClass),

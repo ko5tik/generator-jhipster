@@ -160,10 +160,11 @@ module.exports = class extends BaseGenerator {
           }
         }
       });
+      const yoResolveTranform = this.options.skipYoResolve ? [] : [createYoResolveTransform(this.env.conflicter)];
       const transformStreams = [
         // multi-step changes the file path, should be executed earlier in the pipeline
         new MultiStepTransform(),
-        createYoResolveTransform(this.env.conflicter),
+        ...yoResolveTranform,
         createYoRcTransform(),
         createEachFileTransform(file => {
           if (path.extname(file.path) === '.json' && path.basename(path.dirname(file.path)) === '.jhipster') {
@@ -236,6 +237,7 @@ module.exports = class extends BaseGenerator {
       relationships: [],
       changelogDate,
       fields: userEntityDefinition ? userEntityDefinition.fields || [] : [],
+      dto: true,
     };
 
     loadRequiredConfigIntoEntity(user, this.jhipsterConfig);

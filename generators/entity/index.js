@@ -587,6 +587,19 @@ class EntityGenerator extends BaseBlueprintGenerator {
         const entity = this.context;
         prepareEntityForTemplates(entity, this);
       },
+
+      loadDomain() {
+        const entity = this.context;
+        const { entityPackage, packageName, packageFolder, persistClass } = entity;
+        let { entityAbsolutePackage = packageName, entityAbsoluteFolder = packageFolder } = entity;
+        if (entityPackage) {
+          entityAbsolutePackage = [packageName, entityPackage].join('.');
+          entityAbsoluteFolder = path.join(packageFolder, entityPackage.replace(/\./g, '/'));
+        }
+        entity.entityAbsolutePackage = entityAbsolutePackage;
+        entity.entityAbsoluteFolder = entityAbsoluteFolder;
+        entity.entityAbsoluteClass = `${entityAbsolutePackage}.domain.${persistClass}`;
+      },
     };
   }
 
@@ -737,6 +750,10 @@ class EntityGenerator extends BaseBlueprintGenerator {
         if (!this.configOptions.sharedEntities) return;
         // Make user entity available to templates.
         this.context.user = this.configOptions.sharedEntities.User;
+      },
+
+      loadOtherEntities() {
+        this.context.otherEntities = _.uniq(this.context.relationships.map(rel => rel.otherEntity));
       },
 
       processOtherReferences() {

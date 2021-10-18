@@ -27,6 +27,7 @@ const semver = require('semver');
 const exec = require('child_process').exec;
 const os = require('os');
 const normalize = require('normalize-path');
+const simpleGit = require('simple-git');
 
 const packagejs = require('../package.json');
 const jhipsterUtils = require('./utils');
@@ -65,7 +66,6 @@ const { GATLING, CUCUMBER, PROTRACTOR, CYPRESS } = require('../jdl/jhipster/test
 const { GATEWAY, MICROSERVICE, MONOLITH } = require('../jdl/jhipster/application-types');
 const { ELASTICSEARCH } = require('../jdl/jhipster/search-engine-types');
 const { CUSTOM_PRIORITIES } = require('../lib/constants/priorities.cjs');
-const { getBase64Secret, getRandomHex } = require('./utils');
 const cacheTypes = require('../jdl/jhipster/cache-types');
 const serviceDiscoveryTypes = require('../jdl/jhipster/service-discovery-types');
 const searchEngineTypes = require('../jdl/jhipster/search-engine-types');
@@ -207,7 +207,7 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
   isUsingBuiltInUser() {
     return (
       !this.jhipsterConfig ||
-      !this.jhipsterConfig.skipUserManagement ||
+      (!this.jhipsterConfig.skipUserManagement && this.jhipsterConfig.databaseType !== NO_DATABASE) ||
       (this.jhipsterConfig.authenticationType === OAUTH2 && this.jhipsterConfig.databaseType !== NO_DATABASE)
     );
   }
@@ -1617,6 +1617,7 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
   }
 
   /**
+   * @deprecated
    * Copy i18 files for given language
    *
    * @param {object} generator - context that can be used as the generator instance or data to process template
@@ -1861,16 +1862,22 @@ module.exports = class JHipsterBaseGenerator extends PrivateBase {
    */
   generateKeyStore() {
     const done = this.async();
-    const keyStoreFile = `${SERVER_MAIN_RES_DIR}config/tls/keystore.p12`;
+
+    let keystoreFolder = `${SERVER_MAIN_RES_DIR}config/tls/`;
+    if (this.destinationPath) {
+      keystoreFolder = this.destinationPath(keystoreFolder);
+    }
+    const keyStoreFile = `${keystoreFolder}/keystore.p12`;
+
     if (this.fs.exists(keyStoreFile)) {
       this.log(chalk.cyan(`\nKeyStore '${keyStoreFile}' already exists. Leaving unchanged.\n`));
       done();
     } else {
       try {
-        shelljs.mkdir('-p', `${SERVER_MAIN_RES_DIR}config/tls`);
+        shelljs.mkdir('-p', keystoreFolder);
       } catch (error) {
         // noticed that on windows the shelljs.mkdir tends to sometimes fail
-        fs.mkdir(`${SERVER_MAIN_RES_DIR}config/tls`, { recursive: true }, err => {
+        fs.mkdir(keystoreFolder, { recursive: true }, err => {
           if (err) throw err;
         });
       }
@@ -2572,6 +2579,10 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
       this.jhipsterConfig.skipCommitHook = true;
     }
 
+    if (options.monorepository !== undefined) {
+      this.jhipsterConfig.monorepository = options.monorepository;
+    }
+
     if (options.baseName) {
       this.jhipsterConfig.baseName = this.options.baseName;
     }
@@ -2733,6 +2744,11 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.microfrontend = config.microfrontend;
     dest.gatewayServerPort = config.gatewayServerPort;
 
+    dest.capitalizedBaseName = config.capitalizedBaseName;
+    dest.dasherizedBaseName = config.dasherizedBaseName;
+    dest.humanizedBaseName = config.humanizedBaseName;
+    dest.projectDescription = config.projectDescription;
+
     dest.testFrameworks = config.testFrameworks || [];
     dest.cypressCoverage = config.cypressCoverage;
 
@@ -2752,6 +2768,18 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.applicationTypeGateway = dest.applicationType === GATEWAY;
     dest.applicationTypeMonolith = dest.applicationType === MONOLITH;
     dest.applicationTypeMicroservice = dest.applicationType === MICROSERVICE;
+
+    // Application name modified, using each technology's conventions
+    if (dest.baseName) {
+      dest.camelizedBaseName = _.camelCase(dest.baseName);
+      dest.hipster = this.getHipster(dest.baseName);
+      dest.capitalizedBaseName = dest.capitalizedBaseName || _.upperFirst(dest.baseName);
+      dest.dasherizedBaseName = dest.dasherizedBaseName || _.kebabCase(dest.baseName);
+      dest.lowercaseBaseName = dest.baseName.toLowerCase();
+      dest.humanizedBaseName =
+        dest.humanizedBaseName || (dest.baseName.toLowerCase() === 'jhipster' ? 'JHipster' : _.startCase(dest.baseName));
+      dest.projectDescription = dest.projectDescription || `Description for ${this.baseName}`;
+    }
   }
 
   /**
@@ -2767,6 +2795,8 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.clientTheme = config.clientTheme;
     dest.clientThemeVariant = config.clientThemeVariant;
     dest.devServerPort = config.devServerPort;
+
+    dest.clientSrcDir = config.clientSrcDir || this.CLIENT_MAIN_SRC_DIR;
   }
 
   loadDerivedClientConfig(dest = this) {
@@ -2777,6 +2807,10 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.clientThemePrimary = dest.clientThemeVariant === 'primary';
     dest.clientThemeLight = dest.clientThemeVariant === 'light';
     dest.clientThemeDark = dest.clientThemeVariant === 'dark';
+
+    if (dest.baseName) {
+      dest.frontendAppName = this.getFrontendAppName(dest.baseName);
+    }
   }
 
   /**
@@ -2823,36 +2857,20 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     dest.websocket = config.websocket;
     dest.embeddableLaunchScript = config.embeddableLaunchScript;
 
+    dest.enableGradleEnterprise = config.enableGradleEnterprise;
+
+    if (config.gradleEnterpriseHost && !config.gradleEnterpriseHost.startsWith('https://')) {
+      dest.gradleEnterpriseHost = `https://${config.gradleEnterpriseHost}`;
+    } else {
+      dest.gradleEnterpriseHost = config.gradleEnterpriseHost;
+    }
+
     this.loadDerivedServerConfig(dest);
   }
 
   loadDerivedServerConfig(dest = this) {
     if (!dest.packageFolder) {
       dest.packageFolder = dest.packageName.replace(/\./g, '/');
-    }
-
-    // JWT authentication is mandatory with Eureka, so the JHipster Registry
-    // can control the applications
-    if (dest.serviceDiscoveryType === EUREKA && dest.authenticationType !== OAUTH2) {
-      dest.authenticationType = JWT;
-    }
-
-    // Generate JWT secret key if key does not already exist in config
-    if ((dest.authenticationType === JWT || dest.applicationType === MICROSERVICE) && dest.jwtSecretKey === undefined) {
-      dest.jwtSecretKey = getBase64Secret.call(this, null, 64);
-    }
-    // Generate remember me key if key does not already exist in config
-    if (dest.authenticationType === SESSION && !dest.rememberMeKey) {
-      dest.rememberMeKey = getRandomHex();
-    }
-
-    if (dest.authenticationType === OAUTH2) {
-      dest.skipUserManagement = true;
-    }
-
-    if (dest.enableHibernateCache && [NO_CACHE, MEMCACHED].includes(dest.cacheProvider)) {
-      this.info(`Disabling hibernate cache for cache provider ${dest.cacheProvider}`);
-      dest.enableHibernateCache = false;
     }
 
     // Convert to false for templates.
@@ -2867,30 +2885,6 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
     }
     if (dest.messageBroker === NO_MESSAGE_BROKER || !dest.messageBroker) {
       dest.messageBroker = false;
-    }
-
-    if (!dest.databaseType && dest.prodDatabaseType) {
-      dest.databaseType = this.getDBTypeFromDBValue(dest.prodDatabaseType);
-    }
-    if (!dest.devDatabaseType && dest.prodDatabaseType) {
-      dest.devDatabaseType = dest.prodDatabaseType;
-    }
-
-    // force variables unused by microservice applications
-    if (dest.applicationType === MICROSERVICE) {
-      dest.websocket = false;
-    }
-
-    const databaseType = dest.databaseType;
-    if (databaseType === NO_DATABASE) {
-      dest.devDatabaseType = NO_DATABASE;
-      dest.prodDatabaseType = NO_DATABASE;
-      dest.enableHibernateCache = false;
-      dest.skipUserManagement = true;
-    } else if ([MONGODB, NEO4J, COUCHBASE, CASSANDRA].includes(databaseType)) {
-      dest.devDatabaseType = databaseType;
-      dest.prodDatabaseType = databaseType;
-      dest.enableHibernateCache = false;
     }
 
     dest.authenticationTypeSession = dest.authenticationType === SESSION;
@@ -3162,6 +3156,16 @@ templates: ${JSON.stringify(existingTemplates, null, 2)}`;
         }
         delete this.options[optionName];
       }
+    });
+  }
+
+  /**
+   * Create a simple-git instance using current destinationPath as baseDir.
+   */
+  createGit() {
+    return simpleGit({ baseDir: this.destinationPath() }).env({
+      ...process.env,
+      LANG: 'en',
     });
   }
 };

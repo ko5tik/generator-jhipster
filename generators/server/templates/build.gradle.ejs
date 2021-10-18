@@ -45,6 +45,7 @@ plugins {
 <%_ } _%>
     id "org.sonarqube"
     id "io.spring.nohttp"
+    id "com.github.andygoossens.gradle-modernizer-plugin"
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
@@ -55,7 +56,7 @@ description = ""
 
 sourceCompatibility=<%= JAVA_VERSION %>
 targetCompatibility=<%= JAVA_VERSION %>
-assert System.properties["java.specification.version"] == "1.8" || "1.9" || "10" || "11" || "12" || "13" || "14" || "15" || "16"
+assert System.properties["java.specification.version"] == <%- JAVA_COMPATIBLE_VERSIONS.map(ver => `"${ver}"`).join(' || '); %>
 
 apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"
@@ -126,6 +127,19 @@ test {
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
     reports.html.enabled = false
+<%_ if (reactive) { _%>
+
+    if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_13)) {
+        jvmArgs += [
+            "-XX:+AllowRedefinitionToAddDeleteMethods"
+        ]
+    }
+<%_ } _%>
+}
+
+modernizer {
+    failOnViolations = true
+    includeTestClasses = true
 }
 
 task integrationTest(type: Test) {
@@ -158,6 +172,14 @@ task integrationTest(type: Test) {
     // see https://github.com/jhipster/generator-jhipster/pull/2771 and https://github.com/jhipster/generator-jhipster/pull/4484
     // ignoreFailures true
     reports.html.enabled = false
+<%_ if (reactive) { _%>
+
+    if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_13)) {
+        jvmArgs += [
+            "-XX:+AllowRedefinitionToAddDeleteMethods"
+        ]
+    }
+<%_ } _%>
 }
 <%_ if (cucumberTests) { _%>
 
@@ -458,7 +480,11 @@ dependencies {
     <%_ } _%>
     <%_ if (applicationType === 'microservice' || applicationType === 'gateway') { _%>
     implementation "org.springframework.cloud:spring-cloud-starter"
-    implementation "org.springframework.cloud:spring-cloud-starter-netflix-hystrix"
+    <%_ if (reactive) { _%>
+    implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j"
+    <%_ } else { _%>
+    implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j"
+    <%_ } _%>
     implementation "org.springframework.retry:spring-retry"
     <%_ } _%>
     <%_ if (serviceDiscoveryType) { _%>
@@ -477,6 +503,11 @@ dependencies {
     <%_ } _%>
     <%_ if (applicationType === 'microservice' || applicationType === 'gateway') { _%>
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    <%_ } _%>
+    <%_ if (applicationTypeGateway || (applicationTypeMicroservice && reactive)) { _%>
+    implementation "com.playtika.reactivefeign:feign-reactor-webclient"
+    implementation "com.playtika.reactivefeign:feign-reactor-cloud"
+    implementation "com.playtika.reactivefeign:feign-reactor-spring-configuration"
     <%_ } _%>
     implementation "org.springframework.security:spring-security-config"
     <%_ if (!reactive) { _%><%# Can remove when Spring Security 5.5 is released https://github.com/spring-projects/spring-security/issues/8958 -%>

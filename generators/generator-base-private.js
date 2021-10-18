@@ -29,16 +29,13 @@ const https = require('https');
 const { reproducibleConfigForTests: projectNameReproducibleConfigForTests } = require('./project-name/config.cjs');
 const packagejs = require('../package.json');
 const jhipsterUtils = require('./utils');
-const constants = require('./generator-constants');
+const { JAVA_COMPATIBLE_VERSIONS, SERVER_TEST_SRC_DIR, SUPPORTED_CLIENT_FRAMEWORKS } = require('./generator-constants');
 const { languageToJavaLanguage } = require('./utils');
 const JSONToJDLEntityConverter = require('../jdl/converters/json-to-jdl-entity-converter');
 const JSONToJDLOptionConverter = require('../jdl/converters/json-to-jdl-option-converter');
 const { stringify } = require('../utils');
 
-const SERVER_TEST_SRC_DIR = constants.SERVER_TEST_SRC_DIR;
-const ANGULAR = constants.SUPPORTED_CLIENT_FRAMEWORKS.ANGULAR;
-const REACT = constants.SUPPORTED_CLIENT_FRAMEWORKS.REACT;
-const VUE = constants.SUPPORTED_CLIENT_FRAMEWORKS.VUE;
+const { ANGULAR, REACT, VUE } = SUPPORTED_CLIENT_FRAMEWORKS;
 const dbTypes = require('../jdl/jhipster/field-types');
 const { REQUIRED } = require('../jdl/jhipster/validations');
 
@@ -65,8 +62,6 @@ const databaseTypes = require('../jdl/jhipster/database-types');
 const { MONGODB, NEO4J, COUCHBASE, CASSANDRA, SQL, ORACLE, MYSQL, POSTGRESQL, MARIADB, MSSQL, H2_DISK, H2_MEMORY } = databaseTypes;
 
 const { MAVEN } = require('../jdl/jhipster/build-tool-types');
-const { GATEWAY } = require('../jdl/jhipster/application-types');
-const { SPRING_WEBSOCKET } = require('../jdl/jhipster/websocket-types');
 
 /**
  * This is the Generator base private class.
@@ -104,47 +99,6 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
   }
 
   /**
-   * Install I18N Client Files By Language
-   *
-   * @param {any} _this reference to generator
-   * @param {string} webappDir web app directory
-   * @param {string} lang language code
-   */
-  installI18nClientFilesByLanguage(_this, webappDir, lang) {
-    const generator = _this || this;
-    const prefix = this.fetchFromInstalledJHipster('languages/templates');
-    if (generator.applicationType === GATEWAY && generator.serviceDiscoveryType) {
-      generator.copyI18nFilesByName(generator, webappDir, 'gateway.json', lang);
-    }
-    if (generator.withAdminUi) {
-      generator.copyI18nFilesByName(generator, webappDir, 'configuration.json', lang);
-      generator.copyI18nFilesByName(generator, webappDir, 'logs.json', lang);
-      generator.copyI18nFilesByName(generator, webappDir, 'metrics.json', lang);
-    }
-    generator.copyI18nFilesByName(generator, webappDir, 'error.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'login.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'home.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'password.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'register.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'sessions.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'settings.json', lang);
-    generator.copyI18nFilesByName(generator, webappDir, 'user-management.json', lang);
-
-    // tracker.json for Websocket
-    if (this.websocket === SPRING_WEBSOCKET) {
-      generator.copyI18nFilesByName(generator, webappDir, 'tracker.json', lang);
-    }
-
-    // Templates
-    generator.template(`${prefix}/${webappDir}i18n/${lang}/activate.json.ejs`, `${webappDir}i18n/${lang}/activate.json`);
-    generator.template(`${prefix}/${webappDir}i18n/${lang}/global.json.ejs`, `${webappDir}i18n/${lang}/global.json`);
-    if (generator.withAdminUi) {
-      generator.template(`${prefix}/${webappDir}i18n/${lang}/health.json.ejs`, `${webappDir}i18n/${lang}/health.json`);
-    }
-    generator.template(`${prefix}/${webappDir}i18n/${lang}/reset.json.ejs`, `${webappDir}i18n/${lang}/reset.json`);
-  }
-
-  /**
    * Install I18N Server Files By Language
    *
    * @param {any} _this - reference to generator
@@ -164,50 +118,6 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
         `${prefix}/${testResourceDir}i18n/messages_${langJavaProp}.properties.ejs`,
         `${testResourceDir}i18n/messages_${langJavaProp}.properties`
       );
-    }
-  }
-
-  /**
-   * Copy I18N
-   *
-   * @param language
-   * @param prefix
-   */
-  copyI18n(language, prefix = '') {
-    try {
-      const fileName = this.entityTranslationKey;
-      this.template(
-        `${prefix ? `${prefix}/` : ''}i18n/entity_${language}.json.ejs`,
-        `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${fileName}.json`
-      );
-      this.addEntityTranslationKey(this.entityTranslationKeyMenu, this.entityClassHumanized || _.startCase(this.entityClass), language);
-    } catch (e) {
-      this.debug('Error:', e);
-      // An exception is thrown if the folder doesn't exist
-      // do nothing
-    }
-  }
-
-  /**
-   * Copy Enum I18N
-   *
-   * @param language
-   * @param enumInfo
-   * @param prefix
-   */
-  copyEnumI18n(language, enumInfo, prefix = '') {
-    try {
-      this.template(
-        `${prefix ? `${prefix}/` : ''}i18n/enum.json.ejs`,
-        `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${enumInfo.clientRootFolder}${enumInfo.enumInstance}.json`,
-        this,
-        {},
-        enumInfo
-      );
-    } catch (e) {
-      this.debug('Error:', e);
-      // An exception is thrown if the folder doesn't exist
-      // do nothing
     }
   }
 
@@ -726,7 +636,7 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
           // if no files in Git from current folder then we assume that this is initial application generation
           this.gitExec('add .', { trace: false }, code => {
             if (code === 0) {
-              this.gitExec(`commit -m "${commitMsg}" -- .`, { trace: false }, code => {
+              this.gitExec(`commit --no-verify -m "${commitMsg}" -- .`, { trace: false }, code => {
                 if (code === 0) {
                   this.log(chalk.green.bold(`Application successfully committed to Git from ${process.cwd()}.`));
                 } else {
@@ -896,17 +806,12 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
         this.warning('Java is not found on your computer.');
       } else {
         const javaVersion = stderr.match(/(?:java|openjdk) version "(.*)"/)[1];
-        if (
-          !javaVersion.match(new RegExp('16')) &&
-          !javaVersion.match(new RegExp('15')) &&
-          !javaVersion.match(new RegExp('14')) &&
-          !javaVersion.match(new RegExp('13')) &&
-          !javaVersion.match(new RegExp('12')) &&
-          !javaVersion.match(new RegExp('11')) &&
-          !javaVersion.match(new RegExp('1.8'.replace('.', '\\.')))
-        ) {
+        if (!javaVersion.match(new RegExp(`(${JAVA_COMPATIBLE_VERSIONS.map(ver => `^${ver}`).join('|')})`))) {
+          const [latest, ...others] = JAVA_COMPATIBLE_VERSIONS.reverse();
           this.warning(
-            `Java 8, 11, 12, 13, 14, 15 or 16 are not found on your computer. Your Java version is: ${chalk.yellow(javaVersion)}`
+            `Java ${others.reverse().join(', ')} or ${latest} are not found on your computer. Your Java version is: ${chalk.yellow(
+              javaVersion
+            )}`
           );
         }
       }
@@ -1082,8 +987,9 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
       const fileName = _.kebabCase(field.fieldType);
       if (field.fieldIsEnum && (!uniqueEnums[field.fieldType] || (uniqueEnums[field.fieldType] && field.fieldValues.length !== 0))) {
         const importType = `${field.fieldType}`;
+        const basePath = clientFramework === VUE ? '@' : 'app';
         const modelPath = clientFramework === ANGULAR ? 'entities' : 'shared/model';
-        const importPath = `app/${modelPath}/enumerations/${fileName}.model`;
+        const importPath = `${basePath}/${modelPath}/enumerations/${fileName}.model`;
         uniqueEnums[field.fieldType] = field.fieldType;
         typeImports.set(importType, importPath);
       }
@@ -1233,13 +1139,40 @@ module.exports = class JHipsterBasePrivateGenerator extends Generator {
    * @param {any} primaryKey - primary key definition.
    * @param {number} [index] - index of the primary key sample, pass undefined for a random key.
    */
-  generateTestEntityPrimaryKey(primaryKey, index = 'random') {
+  generateTestEntityPrimaryKey(primaryKey, index) {
+    return JSON.stringify(
+      this.generateTestEntity(
+        primaryKey.fields.map(f => f.reference),
+        index
+      )
+    );
+  }
+
+  /**
+   * Generate a test entity, according to the type
+   *
+   * @param {any} primaryKey - primary key definition.
+   * @param {number} [index] - index of the primary key sample, pass undefined for a random key.
+   */
+  generateTestEntity(references, index = 'random') {
     const random = index === 'random';
-    const entries = primaryKey.ids.map(id => {
-      const value = random ? id.field.generateFakeData('raw') : this.generateTestEntityId(id.field.fieldType, index, false);
-      return [id.name, value];
-    });
-    return JSON.stringify(Object.fromEntries(entries));
+    const entries = references
+      .map(reference => {
+        if (random && reference.field) {
+          const field = reference.field;
+          const fakeData = field.generateFakeData('json-serializable');
+          if (reference.field.fieldWithContentType) {
+            return [
+              [reference.name, fakeData],
+              [field.contentTypeFieldName, 'unknown'],
+            ];
+          }
+          return [[reference.name, fakeData]];
+        }
+        return [[reference.name, this.generateTestEntityId(reference.type, index, false)]];
+      })
+      .flat();
+    return Object.fromEntries(entries);
   }
 
   /**

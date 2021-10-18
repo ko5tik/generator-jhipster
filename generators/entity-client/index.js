@@ -19,12 +19,15 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
 const { writeFiles, addToMenu, replaceTranslations } = require('./files');
+const { entityClientI18nFiles } = require('../entity-i18n/files');
+
 const utils = require('../utils');
 const BaseBlueprintGenerator = require('../generator-base-blueprint');
 const {
   SUPPORTED_CLIENT_FRAMEWORKS: { ANGULAR, REACT },
 } = require('../generator-constants');
 const { GENERATOR_ENTITY_CLIENT } = require('../generator-list');
+const { POSTGRESQL, MARIADB } = require('../../jdl/jhipster/database-types');
 
 let useBlueprints;
 
@@ -36,6 +39,20 @@ module.exports = class extends BaseBlueprintGenerator {
     this.jhipsterContext = this.options.jhipsterContext || this.options.context;
 
     useBlueprints = !this.fromBlueprint && this.instantiateBlueprints(GENERATOR_ENTITY_CLIENT, { context: this.options.context });
+  }
+
+  // Public API method used by the getter and also by Blueprints
+  _preparing() {
+    return {
+      async loadNativeLanguage() {
+        await this._loadEntityClientTranslations(this.entity, this.jhipsterConfig);
+      },
+    };
+  }
+
+  get preparing() {
+    if (useBlueprints) return;
+    return this._preparing();
   }
 
   // Public API method used by the getter and also by Blueprints
@@ -51,6 +68,17 @@ module.exports = class extends BaseBlueprintGenerator {
         if (!this.embedded) {
           this.tsKeyType = this.getTypescriptKeyType(this.primaryKey.type);
         }
+      },
+
+      setupCypress() {
+        // Blueprints may disable cypress relationships by setting to false.
+        this.cypressBootstrapEntities = true;
+
+        const entity = this.entity;
+        // Reactive with PostgreSQL doesn't allow insertion without data.
+        this.workaroundRelationshipReactivePostgress = entity.reactive && entity.prodDatabaseType === POSTGRESQL;
+        // Reactive with MariaDB doesn't allow null value at Instant fields.
+        this.workaroundInstantReactiveMariaDB = entity.reactive && entity.prodDatabaseType === MARIADB;
       },
     };
   }
@@ -140,5 +168,42 @@ module.exports = class extends BaseBlueprintGenerator {
   get postWriting() {
     if (useBlueprints) return;
     return this._postWriting();
+  }
+
+  /**
+   * @experimental
+   * Load entity client native translation.
+   */
+  async _loadEntityClientTranslations(entity, configContext = this) {
+    const { frontendAppName = this.getFrontendAppName(), nativeLanguage = 'en' } = configContext;
+    entity.entityClientTranslations = entity.entityClientTranslations || {};
+    const { entityClientTranslations } = entity;
+    const rootTemplatesPath = this.fetchFromInstalledJHipster('entity-i18n/templates/');
+    const translationFiles = await this.writeFiles({
+      sections: entityClientI18nFiles,
+      rootTemplatesPath,
+      context: { ...entity, clientSrcDir: '__tmp__', frontendAppName, lang: 'en' },
+    });
+    if (nativeLanguage && nativeLanguage !== 'en') {
+      translationFiles.push(
+        ...(await this.writeFiles({
+          sections: entityClientI18nFiles,
+          rootTemplatesPath,
+          context: { ...entity, clientSrcDir: '__tmp__', frontendAppName, lang: nativeLanguage },
+        }))
+      );
+    }
+    for (const translationFile of translationFiles) {
+      _.merge(entityClientTranslations, this.readDestinationJSON(translationFile));
+      delete this.env.sharedFs.get(translationFile).state;
+    }
+  }
+
+  /**
+   * @experimental
+   * Get translation value for a key.
+   */
+  _getEntityClientTranslation(translationKey) {
+    return _.get(this.entityClientTranslations, translationKey, `Translation missing for ${translationKey}`);
   }
 };

@@ -11,7 +11,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -454,7 +454,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -891,7 +891,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -948,6 +948,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -963,6 +966,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -976,6 +982,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -1005,6 +1014,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -1021,6 +1033,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -1096,6 +1111,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -1802,7 +1820,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -2168,6 +2186,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -2183,6 +2204,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -2196,6 +2220,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -2225,6 +2252,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -2241,6 +2271,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -2316,6 +2349,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -3118,7 +3154,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -3475,6 +3511,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -3490,6 +3529,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -3503,6 +3545,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -3532,6 +3577,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -3548,6 +3596,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -3623,6 +3674,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -4410,7 +4464,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -4770,6 +4824,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -4785,6 +4842,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -4798,6 +4858,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -4827,6 +4890,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -4843,6 +4909,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -4936,6 +5005,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -5720,7 +5792,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -6086,6 +6158,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -6101,6 +6176,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -6114,6 +6192,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -6143,6 +6224,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -6159,6 +6243,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -6234,6 +6321,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -7033,7 +7123,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -7399,6 +7489,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -7414,6 +7507,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -7427,6 +7523,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -7456,6 +7555,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -7472,6 +7574,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -7547,6 +7652,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -8346,7 +8454,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -8727,6 +8835,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -8742,6 +8853,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -8755,6 +8869,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -8784,6 +8901,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -8800,6 +8920,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -8875,6 +8998,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -9671,7 +9797,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -10615,7 +10741,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -10981,6 +11107,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -10996,6 +11125,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -11009,6 +11141,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -11038,6 +11173,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -11054,6 +11192,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -11129,6 +11270,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -11928,7 +12072,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -12291,6 +12435,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -12306,6 +12453,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -12319,6 +12469,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -12348,6 +12501,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -12364,6 +12520,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -12439,6 +12598,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -13211,7 +13373,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -13574,6 +13736,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -13589,6 +13754,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -13602,6 +13770,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -13631,6 +13802,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -13647,6 +13821,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -13722,6 +13899,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -14488,7 +14668,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -14854,6 +15034,9 @@ Object {
   "src/main/webapp/app/account/activate/activate.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/activate/activate.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/activate/activate.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -14869,6 +15052,9 @@ Object {
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password-reset/finish/password-reset-finish.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -14882,6 +15068,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/password-reset/init/password-reset-init.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/password-reset/init/password-reset-init.service.ts": Object {
@@ -14911,6 +15100,9 @@ Object {
   "src/main/webapp/app/account/password/password.route.ts": Object {
     "stateCleared": "modified",
   },
+  "src/main/webapp/app/account/password/password.service.spec.ts": Object {
+    "stateCleared": "modified",
+  },
   "src/main/webapp/app/account/password/password.service.ts": Object {
     "stateCleared": "modified",
   },
@@ -14927,6 +15119,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/account/register/register.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/account/register/register.service.ts": Object {
@@ -15002,6 +15197,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {

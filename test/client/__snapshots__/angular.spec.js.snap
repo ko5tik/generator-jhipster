@@ -20,7 +20,7 @@ Object {
   ".gitignore": Object {
     "stateCleared": "modified",
   },
-  ".huskyrc": Object {
+  ".husky/pre-commit": Object {
     "stateCleared": "modified",
   },
   ".lintstagedrc.js": Object {
@@ -123,6 +123,9 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.route.ts": Object {
+    "stateCleared": "modified",
+  },
+  "src/main/webapp/app/admin/health/health.service.spec.ts": Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/app/admin/health/health.service.ts": Object {
@@ -711,6 +714,12 @@ Object {
     "stateCleared": "modified",
   },
   "src/main/webapp/swagger-ui/index.html": Object {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/i18n/messages_en.properties": Object {
+    "stateCleared": "modified",
+  },
+  "src/test/resources/i18n/messages_fr.properties": Object {
     "stateCleared": "modified",
   },
   "tsconfig.app.json": Object {

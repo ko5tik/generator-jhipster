@@ -23,12 +23,14 @@ const { JWT, OAUTH2, SESSION } = require('../../jdl/jhipster/authentication-type
 const { GRADLE, MAVEN } = require('../../jdl/jhipster/build-tool-types');
 const { SPRING_WEBSOCKET } = require('../../jdl/jhipster/websocket-types');
 const databaseTypes = require('../../jdl/jhipster/database-types');
-const { COUCHBASE, MARIADB, MONGODB, NEO4J, ORACLE, SQL } = require('../../jdl/jhipster/database-types');
+const { COUCHBASE, MARIADB, MONGODB, NEO4J, SQL } = require('../../jdl/jhipster/database-types');
 const { CAFFEINE, EHCACHE, HAZELCAST, INFINISPAN, MEMCACHED, REDIS } = require('../../jdl/jhipster/cache-types');
 const { ELASTICSEARCH } = require('../../jdl/jhipster/search-engine-types');
 const { KAFKA } = require('../../jdl/jhipster/message-broker-types');
 const { CONSUL, EUREKA } = require('../../jdl/jhipster/service-discovery-types');
 const { addSectionsCondition, mergeSections } = require('../utils');
+const { writeCouchbaseFiles } = require('./files-couchbase');
+const { writeSqlFiles } = require('./files-sql');
 
 /* Constants use throughout */
 const NO_DATABASE = databaseTypes.NO;
@@ -79,7 +81,7 @@ const mongoDbFiles = {
   docker: [
     {
       path: DOCKER_DIR,
-      templates: ['mongodb-cluster.yml', 'mongodb/MongoDB.Dockerfile', 'mongodb/scripts/init_replicaset.js'],
+      templates: ['mongodb.yml', 'mongodb-cluster.yml', 'mongodb/MongoDB.Dockerfile', 'mongodb/scripts/init_replicaset.js'],
     },
   ],
   serverResource: [
@@ -105,129 +107,13 @@ const mongoDbFiles = {
   ],
 };
 
-const couchbaseFiles = {
+const neo4jFiles = {
   docker: [
     {
       path: DOCKER_DIR,
-      templates: ['couchbase-cluster.yml', 'couchbase/Couchbase.Dockerfile', 'couchbase/scripts/configure-node.sh'],
+      templates: ['neo4j.yml'],
     },
   ],
-  serverJavaConfig: [
-    {
-      path: SERVER_MAIN_SRC_DIR,
-      templates: [
-        {
-          file: 'package/config/couchbase/CustomCouchbaseRepositoryFactory.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/CustomCouchbaseRepositoryFactory.java`,
-        },
-        {
-          file: 'package/config/couchbase/CustomCouchbaseRepositoryFactoryBean.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/CustomCouchbaseRepositoryFactoryBean.java`,
-        },
-        {
-          file: 'package/config/couchbase/CustomCouchbaseRepositoryQuery.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/CustomCouchbaseRepositoryQuery.java`,
-        },
-        {
-          file: 'package/config/couchbase/CustomN1qlQueryCreator.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/CustomN1qlQueryCreator.java`,
-        },
-        {
-          file: 'package/config/couchbase/CustomN1qlRepositoryQueryExecutor.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/CustomN1qlRepositoryQueryExecutor.java`,
-        },
-        {
-          file: 'package/config/couchbase/package-info.java',
-          renameTo: generator => `${generator.javaDir}config/couchbase/package-info.java`,
-        },
-      ],
-    },
-    {
-      condition: generator => !shouldSkipUserManagement(generator) && generator.authenticationType === SESSION && !generator.reactive,
-      path: SERVER_MAIN_SRC_DIR,
-      templates: [
-        {
-          file: 'package/repository/PersistentTokenRepository_couchbase.java',
-          renameTo: generator => `${generator.javaDir}repository/PersistentTokenRepository.java`,
-        },
-      ],
-    },
-    {
-      condition: generator => !generator.reactive,
-      path: SERVER_MAIN_SRC_DIR,
-      templates: [
-        {
-          file: 'package/repository/CustomCouchbaseRepository.java',
-          renameTo: generator => `${generator.javaDir}repository/CustomCouchbaseRepository.java`,
-        },
-        {
-          file: 'package/repository/N1qlCouchbaseRepository.java',
-          renameTo: generator => `${generator.javaDir}repository/N1qlCouchbaseRepository.java`,
-        },
-      ],
-    },
-    {
-      condition: generator => generator.reactive,
-      path: SERVER_MAIN_SRC_DIR,
-      templates: [
-        {
-          file: 'package/repository/CustomReactiveCouchbaseRepository.java',
-          renameTo: generator => `${generator.javaDir}repository/CustomReactiveCouchbaseRepository.java`,
-        },
-      ],
-    },
-    {
-      condition: generator => generator.searchEngine === COUCHBASE,
-      path: SERVER_MAIN_SRC_DIR,
-      templates: [
-        {
-          file: 'package/repository/search/SearchCouchbaseRepository.java',
-          renameTo: generator => `${generator.javaDir}repository/search/SearchCouchbaseRepository.java`,
-        },
-      ],
-    },
-    {
-      condition: generator => generator.searchEngine === COUCHBASE,
-      path: SERVER_TEST_SRC_DIR,
-      templates: [
-        {
-          file: 'package/repository/CustomCouchbaseRepositoryTest.java',
-          renameTo: generator => `${generator.testDir}repository/CustomCouchbaseRepositoryTest.java`,
-        },
-      ],
-    },
-  ],
-  serverResource: [
-    {
-      condition: generator => generator.databaseTypeCouchbase,
-      path: SERVER_MAIN_RES_DIR,
-      templates: ['config/couchmove/changelog/V0__create_indexes.n1ql'],
-    },
-    {
-      condition: generator => !generator.skipUserManagement || generator.authenticationType === OAUTH2,
-      path: SERVER_MAIN_RES_DIR,
-      templates: [
-        'config/couchmove/changelog/V0.1__initial_setup/ROLE_ADMIN.json',
-        'config/couchmove/changelog/V0.1__initial_setup/ROLE_USER.json',
-        'config/couchmove/changelog/V0.1__initial_setup/user__admin.json',
-        'config/couchmove/changelog/V0.1__initial_setup/user__user.json',
-      ],
-    },
-  ],
-  serverTestFw: [
-    {
-      path: SERVER_TEST_SRC_DIR,
-      templates: [
-        {
-          file: 'package/CouchbaseTestContainerExtension.java',
-          renameTo: generator => `${generator.testDir}CouchbaseTestContainerExtension.java`,
-        },
-      ],
-    },
-  ],
-};
-
-const neo4jFiles = {
   serverResource: [
     {
       condition: generator => !generator.skipUserManagement || generator.authenticationType === OAUTH2,
@@ -246,16 +132,7 @@ const neo4jFiles = {
     {
       condition: generator => !generator.skipUserManagement || generator.authenticationType === OAUTH2,
       path: SERVER_MAIN_RES_DIR,
-      templates: [
-        {
-          file: 'config/couchmove/changelog/V0.1__initial_setup/user__admin.json',
-          renameTo: () => 'config/neo4j/migrations/user__admin.json',
-        },
-        {
-          file: 'config/couchmove/changelog/V0.1__initial_setup/user__user.json',
-          renameTo: () => 'config/neo4j/migrations/user__user.json',
-        },
-      ],
+      templates: ['config/neo4j/migrations/user__admin.json', 'config/neo4j/migrations/user__user.json'],
     },
   ],
   serverTestFw: [
@@ -277,6 +154,7 @@ const cassandraFiles = {
       path: DOCKER_DIR,
       templates: [
         // docker-compose files
+        'cassandra.yml',
         'cassandra-cluster.yml',
         'cassandra-migration.yml',
         // dockerfiles
@@ -356,7 +234,7 @@ const baseServerFiles = {
       ],
     },
     {
-      condition: generator => generator.prodDatabaseType !== NO_DATABASE && generator.prodDatabaseType !== ORACLE,
+      condition: generator => generator.databaseTypeSql && !generator.prodDatabaseTypeOracle,
       path: DOCKER_DIR,
       templates: [{ file: generator => `${generator.prodDatabaseType}.yml` }],
     },
@@ -1831,7 +1709,6 @@ const serverFiles = mergeSections(
   addSectionsCondition(h2Files, context => context.devDatabaseTypeH2Any),
   addSectionsCondition(liquibaseFiles, context => context.databaseTypeSql),
   addSectionsCondition(mongoDbFiles, context => context.databaseTypeMongodb),
-  addSectionsCondition(couchbaseFiles, context => context.databaseTypeCouchbase),
   addSectionsCondition(neo4jFiles, context => context.databaseTypeNeo4j),
   addSectionsCondition(cassandraFiles, context => context.databaseTypeCassandra)
 );
@@ -1858,6 +1735,10 @@ function writeFiles() {
     writeFiles() {
       return this.writeFilesToDisk(serverFiles);
     },
+
+    ...writeCouchbaseFiles(),
+
+    ...writeSqlFiles(),
   };
 }
 

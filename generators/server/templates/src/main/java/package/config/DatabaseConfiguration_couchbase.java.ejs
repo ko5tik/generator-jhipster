@@ -24,28 +24,16 @@ import tech.jhipster.config.JHipsterProperties;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.couchmove.Couchmove;
-<%_ if (searchEngineCouchbase) { _%>
-import <%= packageName %>.repository.Custom<% if (reactive) { %>Reactive<% } %>CouchbaseRepository;
-<%_ } else if (searchEngineElasticsearch) { _%>
-import org.springframework.data.couchbase.repository.<% if (reactive) { %>Reactive<% } %>CouchbaseRepository;
-<%_ } _%>
 
 import <%= packageName %>.config.couchbase.CustomCouchbaseRepositoryFactoryBean;
-
-import org.apache.commons.codec.binary.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-<%_ if (searchEngineElasticsearch) { _%>
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.FilterType;
-<%_ } _%>
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
@@ -65,6 +53,7 @@ import org.springframework.data.couchbase.core.mapping.event.ValidatingCouchbase
 import org.springframework.data.couchbase.repository.auditing.EnableCouchbaseAuditing;
 <%_ } _%>
 import org.springframework.data.couchbase.repository.config.Enable<%_ if (reactive) { _%>Reactive<% } %>CouchbaseRepositories;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -85,7 +74,7 @@ import reactor.core.publisher.Flux;
 @Enable<% if (reactive) { %>Reactive<% } %>ElasticsearchRepositories("<%= packageName %>.repository.search")
 <%_ } _%>
 @Profile("!" + JHipsterConstants.SPRING_PROFILE_CLOUD)
-@Enable<% if (reactive) { %>Reactive<% } %>CouchbaseRepositories(<% if (searchEngineCouchbase) { %>repositoryBaseClass = Custom<% if (reactive) { %>Reactive<% } %>CouchbaseRepository.class, <% } %>basePackages = "<%= packageName %>.repository", repositoryFactoryBeanClass = CustomCouchbaseRepositoryFactoryBean.class<%_ if (searchEngineElasticsearch) { %>,
+@Enable<% if (reactive) { %>Reactive<% } %>CouchbaseRepositories(basePackages = "<%= packageName %>.repository", repositoryFactoryBeanClass = CustomCouchbaseRepositoryFactoryBean.class<%_ if (searchEngineElasticsearch) { %>,
     includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, value = <% if (reactive) { %>Reactive<% } %>CouchbaseRepository.class)<%_ } _%>)
 <%_ if (!reactive) { _%>
 @EnableCouchbaseAuditing(auditorAwareRef = "springSecurityAuditorAware", dateTimeProviderRef = "")
@@ -175,12 +164,22 @@ public class DatabaseConfiguration extends AbstractCouchbaseConfiguration {
         return mappingCouchbaseConverter;
     }
 
+    /**
+     * Workaround for Couchbase overriding SB default jackson mapper: https://github.com/spring-projects/spring-data-couchbase/issues/1209
+     */
+    @Bean
+    @Primary
+    ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+        return builder.createXmlMapper(false).build();
+    }
+
     @Bean
     public Couchmove couchmove(Cluster cluster) {
         log.debug("Configuring Couchmove");
         Bucket bucket = cluster.bucket(getBucketName());
         Couchmove couchmove = new Couchmove(bucket, cluster, "config/couchmove/changelog");
         couchmove.migrate();
+        couchmove.buildN1qlDeferredIndexes();
         return couchmove;
     }
 
@@ -268,7 +267,7 @@ public class DatabaseConfiguration extends AbstractCouchbaseConfiguration {
 
         @Override
         public byte[] convert(String source) {
-            return Base64.decodeBase64(source);
+            return Base64.getDecoder().decode(source);
         }
     }
 
